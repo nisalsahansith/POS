@@ -196,7 +196,8 @@ $(document).ready(function () {
             console.log(custCount)
             $('.itemCount').text(custCount);
     }
-     $('.btnGetAllitem').on('click', function () { 
+    $('.btnGetAllitem').on('click', function (event) { 
+         event.preventDefault();
          let iId = $('.iID').val();
          console.log(iId)
             let ite = Item.getAllById(iId);

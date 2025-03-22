@@ -156,7 +156,7 @@ $(document).ready(function () {
 
     $('.purchases').on("click", function (event) { 
         event.preventDefault();
-
+        let order = $('.orderID').val();
         let cash = $('.cash').val();
         let subTotal = parseFloat($('.subTotal').text()) || 0;
         let oId = $('.orderID').val();
@@ -165,7 +165,7 @@ $(document).ready(function () {
         let custId = $('.custId').val();
         let order1 = new Order(oId, date, total, subTotal, custId)
         console.log(order1)
-        if (cash >= total ) { 
+        if (cash >= total && valide(order) && total > 0) { 
             if (Order.saveOrder(order1)) {
                 OrderDetails.saveOrderDetail(OrderDetail);
                 alert("Order Placed Successfully");
@@ -183,10 +183,28 @@ $(document).ready(function () {
             }
             $('.cashError').text("")
         } else {
-            alert("Insufficient balance")
-            $('.cashError').text("insuficent Balance")
+            if (cash < total) {
+                alert("Insufficient balance")
+                $('.cashError').text("insuficent Balance")
+            } else if (!valide(order)) {
+                alert("Incorrect Order Id")
+                $('.ordError').text("Order Id required (pattern: ORD-001)")
+            } else if (! total > 0) {
+                alert("Item Not added")
+            }
         }
     })
+
+    function valide(oId) {
+        if (oId = "" || !/^ORD-\d{3}$/.test(oId)) {
+            $('.orderID').css('border-color', 'red');
+            return false;
+        } else {
+            $('.orderID').css('border-color', 'skyblue');
+            $('.ordError').text("")
+            return true;
+         }
+    }
     function orderCount() {
             let orderCount = Order.getOrderCount();
             $('.orderCount').text(orderCount);

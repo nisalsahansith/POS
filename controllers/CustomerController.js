@@ -207,9 +207,9 @@ $(document).ready(function () {
     
     });
 
-    $('.btnGetAll').on('click', function () { 
+    $('.btnGetAll').on('click', function (event) { 
+         event.preventDefault();
         let cuId = $('.cID').val();
-        console.log(cuId);
         let custs = Customer.getAllById(cuId);
         if (custs) {
             $('.cName').val(custs.name);
